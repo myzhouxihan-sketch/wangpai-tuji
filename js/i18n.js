@@ -160,6 +160,16 @@
     }
   }
 
+  // 合并游戏页补充字典（优先，覆盖同名词条）
+  if (typeof gameDict !== 'undefined') {
+    for (var lang3 in gameDict) {
+      if (!dict[lang3]) dict[lang3] = {};
+      for (var key3 in gameDict[lang3]) {
+        dict[lang3][key3] = gameDict[lang3][key3];
+      }
+    }
+  }
+
   var LANG_KEY = 'wp_lang';
   var currentLang = localStorage.getItem(LANG_KEY) || 'zh-cn';
 
