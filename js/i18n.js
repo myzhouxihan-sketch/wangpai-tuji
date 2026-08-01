@@ -254,6 +254,27 @@
         img.setAttribute('srcset', isZh ? zhSrc : enSrc);
       }
     });
+
+    // 同步更改网站标题（<title> 和 og:title）
+    var titleZh = '次世代游戏《王牌突击队》现已上线';
+    var titleMap = {
+      'en': 'Next-Gen Game Ace-Ops Is Now Available',
+      'ja': '次世代ゲーム Ace-Ops 配信中',
+      'ko': '차세대 게임 Ace-Ops 출시',
+      'ru': 'Игра нового поколения Ace-Ops уже доступна',
+      'de': 'Next-Gen-Spiel Ace-Ops ist jetzt verfügbar',
+      'pl': 'Gra nowej generacji Ace-Ops już dostępna',
+      'pt-br': 'O jogo de nova geração Ace-Ops já está disponível',
+      'fr': 'Le jeu next-gen Ace-Ops est maintenant disponible',
+      'es': 'El juego de nueva generación Ace-Ops ya está disponible',
+      'it': 'Il gioco di nuova generazione Ace-Ops è ora disponibile',
+      'zh-tw': '次世代遊戲《王牌突擊隊》現已上線',
+    };
+    var newTitle = (lang === 'zh-cn') ? titleZh : (titleMap[lang] || titleZh);
+    document.title = newTitle;
+    document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach(function(m) {
+      m.setAttribute('content', newTitle);
+    });
   }
 
   // 绑定右上角语言下拉框
