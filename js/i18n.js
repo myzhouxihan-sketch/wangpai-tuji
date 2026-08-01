@@ -150,6 +150,16 @@
     }
   }
 
+  // 合并购买页补充字典（优先，覆盖同名词条）
+  if (typeof buyDict !== 'undefined') {
+    for (var lang2 in buyDict) {
+      if (!dict[lang2]) dict[lang2] = {};
+      for (var key in buyDict[lang2]) {
+        dict[lang2][key] = buyDict[lang2][key];
+      }
+    }
+  }
+
   var LANG_KEY = 'wp_lang';
   var currentLang = localStorage.getItem(LANG_KEY) || 'zh-cn';
 
