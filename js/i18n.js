@@ -143,6 +143,13 @@
     }
   };
 
+  // 合并补充语言字典（ru/de/pl/pt-br/fr/es/it/zh-tw）
+  if (typeof extraDict !== 'undefined') {
+    for (var lang in extraDict) {
+      dict[lang] = extraDict[lang];
+    }
+  }
+
   var LANG_KEY = 'wp_lang';
   var currentLang = localStorage.getItem(LANG_KEY) || 'zh-cn';
 
@@ -214,7 +221,7 @@
 
   // 给语言链接加上 data-lang 标识
   function markLangLinks() {
-    var map = { 'en': 'en', 'ja': 'ja', 'ko': 'ko', 'zh-cn': 'zh-cn', 'zh-tw': 'zh-cn', 'ru': 'ru', 'de': 'de', 'pl': 'pl', 'pt-br': 'pt-br', 'fr': 'fr', 'es': 'es', 'es-mx': 'es-mx', 'it': 'it' };
+    var map = { 'en': 'en', 'ja': 'ja', 'ko': 'ko', 'zh-cn': 'zh-cn', 'zh-tw': 'zh-tw', 'ru': 'ru', 'de': 'de', 'pl': 'pl', 'pt-br': 'pt-br', 'fr': 'fr', 'es': 'es', 'es-mx': 'es-mx', 'it': 'it' };
     document.querySelectorAll('.menu-item-lang .menu-sub-list a, .l-footer__langs ul a').forEach(function(a) {
       var lang = a.getAttribute('hreflang');
       if (lang && map[lang]) {
