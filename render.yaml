@@ -1,0 +1,6 @@
+# Render 静态站点配置
+# 在 render.com → New → Static Site → 连接仓库后自动识别
+services:
+  - type: static
+    name: wangpai-tuji
+    staticPublishPath: .
