@@ -34,3 +34,15 @@
 @media (min-width:768px) and (max-width:1199.9px){
   .header-top__logo{width:200px !important;max-width:200px !important}
 }
+/* ===== SINGLE PRODUCT CENTER OVERRIDE ===== */
+/* 只剩一个选项时：单列并水平居中 */
+.info.info-b .boxes.game--boxes{
+  grid-template-columns:1fr !important;
+  max-width:860px;
+  margin:0 auto;
+  justify-items:center;
+}
+.info.info-b .boxes.game--boxes .game__container{
+  max-width:860px;
+  width:100%;
+}
