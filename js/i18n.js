@@ -219,6 +219,14 @@
           newText = newText.split(key).join(t[key] || fallback[key]);
         }
       });
+      // 非中文语言：品牌名统一替换为 Ace-Ops
+      if (lang !== 'zh-cn') {
+        newText = newText
+          .replace(/Ace Strike Force/gi, 'Ace-Ops')
+          .replace(/エースストライクフォース/g, 'Ace-Ops')
+          .replace(/에이스 스트라이크 포스/g, 'Ace-Ops')
+          .replace(/Ace Strike Force/gi, 'Ace-Ops');
+      }
       if (newText !== orig) {
         node.nodeValue = newText;
       }
@@ -229,6 +237,22 @@
     var menuSubs = document.querySelectorAll('.menu-item-lang .menu-sub');
     menuSubs.forEach(function(el) {
       el.textContent = langLabels[lang] || 'zh-cn';
+    });
+
+    // 切换 logo：非中文用英文logo，中文用中文logo
+    var isZh = (lang === 'zh-cn');
+    document.querySelectorAll('img[src*="logo-wangpai"], img[data-logo-zh]').forEach(function(img) {
+      var zhSrc = img.getAttribute('data-logo-zh');
+      if (!zhSrc) {
+        zhSrc = img.getAttribute('src');
+        img.setAttribute('data-logo-zh', zhSrc);
+      }
+      var enSrc = zhSrc.replace('logo-wangpai.png', 'logo-wangpai-en.png');
+      img.setAttribute('src', isZh ? zhSrc : enSrc);
+      // srcset 也处理
+      if (img.getAttribute('srcset')) {
+        img.setAttribute('srcset', isZh ? zhSrc : enSrc);
+      }
     });
   }
 
