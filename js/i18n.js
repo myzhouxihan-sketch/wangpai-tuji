@@ -162,6 +162,14 @@
           if (node.parentNode && (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE')) {
             return NodeFilter.FILTER_REJECT;
           }
+          // 跳过语言下拉框内的文字（语言名称保持原文，不被翻译）
+          var p = node.parentNode;
+          while (p && p !== document.body) {
+            if (p.classList && (p.classList.contains('menu-item-lang') || p.classList.contains('l-footer__langs') || p.classList.contains('language-selector'))) {
+              return NodeFilter.FILTER_REJECT;
+            }
+            p = p.parentNode;
+          }
           var text = node.nodeValue.trim();
           return text ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
         }
