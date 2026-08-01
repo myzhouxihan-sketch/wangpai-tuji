@@ -159,7 +159,7 @@
     var t = dict[lang] || dict['zh-cn'];
     var fallback = dict['zh-cn'];
 
-    // 遍历 body 里所有文本节点，按字典翻译
+    // 遍历 body 里所有文本节点
     var walker = document.createTreeWalker(
       document.body,
       NodeFilter.SHOW_TEXT,
@@ -185,10 +185,25 @@
     var nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
 
+    // 先恢复所有节点到中文原文，再翻译成目标语言
     nodes.forEach(function(node) {
-      var orig = node.nodeValue;
+      if (typeof node.__wpOrig === 'string') {
+        // 已有记录的中文原文，恢复
+        node.nodeValue = node.__wpOrig;
+      } else if (lang === 'zh-cn') {
+        // 首次切回中文，记录当前(中文)为原文
+        node.__wpOrig = node.nodeValue;
+      } else {
+        // 首次从中文切到其他语言：记录当前中文文本为原文
+        node.__wpOrig = node.nodeValue;
+      }
+    });
+
+    // 现在翻译
+    nodes.forEach(function(node) {
+      var orig = node.__wpOrig || node.nodeValue;
       var newText = orig;
-      // 从最长到最短替换，避免短词先替换破坏长句
+      // 从最长到最短替换
       Object.keys(fallback).sort(function(a, b) { return b.length - a.length; }).forEach(function(key) {
         if (orig.indexOf(key) !== -1) {
           newText = newText.split(key).join(t[key] || fallback[key]);
@@ -200,7 +215,7 @@
     });
 
     // 更新右上角语言显示
-    var langLabels = { 'zh-cn': 'zh-cn', 'en': 'en', 'ja': 'ja', 'ko': 'ko' };
+    var langLabels = { 'zh-cn': 'zh-cn', 'en': 'en', 'ja': 'ja', 'ko': 'ko', 'ru': 'ru', 'de': 'de', 'pl': 'pl', 'pt-br': 'pt-br', 'fr': 'fr', 'es': 'es', 'it': 'it', 'zh-tw': 'zh-tw' };
     var menuSubs = document.querySelectorAll('.menu-item-lang .menu-sub');
     menuSubs.forEach(function(el) {
       el.textContent = langLabels[lang] || 'zh-cn';
